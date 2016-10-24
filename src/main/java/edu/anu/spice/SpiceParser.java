@@ -385,7 +385,7 @@ public class SpiceParser {
 						tuples.addTuple(subj, pred, prep);
 					} else {
 						if (!pred.lemma().equals("be")) {
-							tuples.addTuple(subj, pred.toString());
+							tuples.addTuple(subj, pred.originalText().toLowerCase());
 						}
 					}
 				}
@@ -443,7 +443,6 @@ public class SpiceParser {
 			matcher = PLURAL_SUBJECT_PATTERN.matcher(sg);
 			while (matcher.findNextMatchingNode()) {
 				IndexedWord subj = matcher.getNode("subj");
-                System.out.print("PLURAL2 ");
 				checkForNumericAttribute(tuples, sg, subj);
 			}
 
@@ -489,7 +488,6 @@ public class SpiceParser {
 				}
 			}
 		}
-        System.out.println(" ");
 		return tuples;
 	}
 
