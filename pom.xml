@@ -73,8 +73,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<!-- Build an executable JAR -->
+		<plugin>
+			<!-- Build an executable JAR -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
@@ -88,8 +88,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<plugin>
-				<!-- Install local jars (meteor-1.5.jar and scenegraph-1.0.jar) -->
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>2.5.2</version>
@@ -125,9 +124,9 @@
 						<goals>
 							<goal>install-file</goal>
 						</goals>
-					</execution>
+					</execution> 
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 	<dependencies>
@@ -234,11 +233,13 @@
 			<groupId>edu.cmu.meteor</groupId>
 			<artifactId>Meteor</artifactId>
 			<version>1.5</version>
+			 <!--<systemPath>${project.basedir}/lib/meteor-1.5.jar</systemPath>-->
 		</dependency>
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>SceneGraphParser</artifactId>
 			<version>1.0</version>
+			<!--<systemPath>${project.basedir}/lib/scenegraph-1.0.jar</systemPath>-->
 		</dependency>
 	</dependencies>
 	<repositories>

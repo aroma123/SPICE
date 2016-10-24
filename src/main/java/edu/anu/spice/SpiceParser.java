@@ -150,6 +150,13 @@ public class SpiceParser {
 			tuple.add(pred.lemma().trim().toLowerCase());
 			this.tuples.add(tuple);	
 		}
+        
+        public void addTuple(IndexedWord subj, String pred) {
+            ArrayList<String> tuple = new ArrayList<String>();
+            tuple.add(subj.lemma().trim().toLowerCase());
+            tuple.add(pred);
+            this.tuples.add(tuple);	
+        }
 
 		public void addTuple(IndexedWord word) {
 			ArrayList<String> tuple = new ArrayList<String>();
@@ -292,9 +299,12 @@ public class SpiceParser {
 		if (sg.hasChildWithReln(mainPred, UniversalEnglishGrammaticalRelations.PHRASAL_VERB_PARTICLE)) {
 			IndexedWord part = sg.getChildWithReln(mainPred,
 					UniversalEnglishGrammaticalRelations.PHRASAL_VERB_PARTICLE);
-			return String.format("%s %s", mainPred.lemma().equals("be") ? "" : mainPred.lemma(), part.value());
+            //System.out.println(String.format("%s %s", mainPred.lemma().equals("be") ? "" : mainPred.originalText().toLowerCase(), part.value()));
+			return String.format("%s %s", mainPred.lemma().equals("be") ? "" : mainPred.originalText().toLowerCase(), part.value());
+            //return String.format("%s %s", mainPred.lemma().equals("be") ? "" : mainPred.toString());
 		}
-		return mainPred.lemma();
+        //System.out.println(mainPred.originalText().toLowerCase());
+		return mainPred.originalText().toLowerCase();
 	}
 
 	/**
@@ -327,7 +337,7 @@ public class SpiceParser {
 			SemanticGraphEnhancer.processQuanftificationModifiers(sg);
 			SemanticGraphEnhancer.collapseCompounds(sg);
 			SemanticGraphEnhancer.collapseParticles(sg);
-			SemanticGraphEnhancer.resolvePronouns(sg);
+			//SemanticGraphEnhancer.resolvePronouns(sg);
 
 			SemgrexMatcher matcher = SUBJ_PRED_OBJ_TRIPLET_PATTERN.matcher(sg);
 			while (matcher.find()) {
@@ -339,7 +349,7 @@ public class SpiceParser {
 				if (reln.startsWith("nmod:") && !reln.equals("nmod:poss") && !reln.equals("nmod:agent")) {
 					predicate += reln.replace("nmod:", " ").replace("_", " ");
 				}
-				tuples.addTuple(subj, obj, predicate);
+                tuples.addTuple(subj, obj, predicate);
 			}
 
 			matcher = ACL_PATTERN.matcher(sg);
@@ -375,7 +385,7 @@ public class SpiceParser {
 						tuples.addTuple(subj, pred, prep);
 					} else {
 						if (!pred.lemma().equals("be")) {
-							tuples.addTuple(subj, pred);
+							tuples.addTuple(subj, pred.toString());
 						}
 					}
 				}
@@ -433,6 +443,7 @@ public class SpiceParser {
 			matcher = PLURAL_SUBJECT_PATTERN.matcher(sg);
 			while (matcher.findNextMatchingNode()) {
 				IndexedWord subj = matcher.getNode("subj");
+                System.out.print("PLURAL2 ");
 				checkForNumericAttribute(tuples, sg, subj);
 			}
 
@@ -478,6 +489,7 @@ public class SpiceParser {
 				}
 			}
 		}
+        System.out.println(" ");
 		return tuples;
 	}
 
